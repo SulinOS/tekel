@@ -1,0 +1,1 @@
+cat $HOME/.bakkal/index | awk -F "::" 'print $1'

@@ -1,0 +1,3 @@
+PATH=$PATH:/usr/libexec/bakkal/api
+[ -f $HOME/.bakkal/packages/$2 ] || exit 1
+echo $2 | get_info

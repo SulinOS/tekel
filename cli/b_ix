@@ -1,0 +1,9 @@
+repo_url=$(cat repo_url)
+generate_line(){
+    while read line
+    do
+        name=$(basename $line | sed "s/\.sh$//g")
+        echo "$name::$repo_url/$line"
+    done
+}
+find | grep ".sh$" |  generate_line | sed "s|/\./|/|g" > index.txt

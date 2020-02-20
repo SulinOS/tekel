@@ -1,0 +1,4 @@
+while read line
+do
+curl $line >> $HOME/.bakkal/index 
+done
