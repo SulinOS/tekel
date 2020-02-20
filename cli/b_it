@@ -2,7 +2,8 @@ PATH=$PATH:/usr/libexec/bakkal/api
 script_url=$(get_script_url $2)
 curl $script_url > $HOME/.bakkal/tmp/$2.sh
 . $HOME/.bakkal/tmp/$2.sh
-mkdir -p /data/app/$USER/$2
+rm -rf "/data/app/$USER/$2"
+mkdir -p "/data/app/$USER/$2"
 cd /data/app/$USER/$2
 _setup
 cd /data/app/$USER/$2
