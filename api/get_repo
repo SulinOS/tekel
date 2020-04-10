@@ -1,4 +1,4 @@
 while read line
 do
-curl $line >> $HOME/.bakkal/index 
+curl $line >> $HOME/.tekel/index 
 done

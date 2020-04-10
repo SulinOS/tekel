@@ -1,3 +1,3 @@
-PATH=$PATH:/usr/libexec/bakkal/api
-mkdir -p $HOME/.bakkal/packages 2> /dev/null
-ls $HOME/.bakkal/packages/ | get_info
+PATH=$PATH:/usr/libexec/tekel/api
+mkdir -p $HOME/.tekel/packages 2> /dev/null
+ls $HOME/.tekel/packages/ | get_info

@@ -1,4 +1,4 @@
-PATH=$PATH:/usr/libexec/bakkal/api
+PATH=$PATH:/usr/libexec/tekel/api
 rm -rf /data/app/$USER/$2
-rm -f $HOME/.local/share/applications/$(cat $HOME/.bakkal/packages/$2).desktop
-rm -f $HOME/.bakkal/packages/$2
+rm -f $HOME/.local/share/applications/$(cat $HOME/.tekel/packages/$2).desktop
+rm -f $HOME/.tekel/packages/$2

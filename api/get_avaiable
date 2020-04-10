@@ -1,1 +1,1 @@
-cat $HOME/.bakkal/index | awk -F "::" 'print $1'
+cat $HOME/.tekel/index | awk -F "::" 'print $1'

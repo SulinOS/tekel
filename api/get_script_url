@@ -1,2 +1,2 @@
-cat $HOME/.bakkal/index | grep "^$1::" | awk -F "::" '{print $2}' | head -n 1
+cat $HOME/.tekel/index | grep "^$1::" | awk -F "::" '{print $2}' | head -n 1
 

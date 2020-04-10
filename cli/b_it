@@ -1,9 +1,9 @@
 #!/bin/bash
-PATH=$PATH:/usr/libexec/bakkal/api
+PATH=$PATH:/usr/libexec/tekel/api
 script_url=$(get_script_url $2)
-curl $script_url > $HOME/.bakkal/tmp/$2.sh
+curl $script_url > $HOME/.tekel/tmp/$2.sh
 cd /data/app/$USER/$2
-. $HOME/.bakkal/tmp/$2.sh
+. $HOME/.tekel/tmp/$2.sh
 rm -rf "/data/app/$USER/$2"
 mkdir -p "/data/app/$USER/$2"
 cd /data/app/$USER/$2
@@ -13,7 +13,7 @@ _build
 cd /data/app/$USER/$2
 _install
 cd /data/app/$USER/$2
-echo "$NAME" > $HOME/.bakkal/packages/$2
+echo "$NAME" > $HOME/.tekel/packages/$2
 
 dfile="$HOME/.local/share/applications/$NAME.desktop"
 touch $dfile

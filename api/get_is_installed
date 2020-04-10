@@ -1,1 +1,1 @@
-[ -f $HOME/.bakkal/$1 ]
+[ -f $HOME/.tekel/$1 ]
