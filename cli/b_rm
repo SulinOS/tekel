@@ -1,3 +1,4 @@
 PATH=$PATH:/usr/libexec/bakkal/api
 rm -rf /data/app/$USER/$2
+rm -f $HOME/.local/share/applications/$(cat $HOME/.bakkal/packages/$2).desktop
 rm -f $HOME/.bakkal/packages/$2

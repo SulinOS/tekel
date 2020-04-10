@@ -1,3 +1,4 @@
+#!/bin/bash
 PATH=$PATH:/usr/libexec/bakkal/api
 script_url=$(get_script_url $2)
 curl $script_url > $HOME/.bakkal/tmp/$2.sh
@@ -10,4 +11,17 @@ cd /data/app/$USER/$2
 _build
 cd /data/app/$USER/$2
 _install
-touch $HOME/.bakkal/packages/$2
+echo "$NAME" > $HOME/.bakkal/packages/$2
+
+dfile="$HOME/.local/share/applications/$NAME.desktop"
+touch $dfile
+echo "[Desktop Entry]" > $dfile
+echo "Version=1.0" >> $dfile
+echo "Name=$NAME" >> $dfile
+echo "Comment=$COMMENT" >> $dfile
+echo "Categories=$CATEGORY" >> $dfile
+echo "Icon=$ICON" >> $dfile
+echo "Exec=$EXEC" >> $dfile
+echo "Type=Application" >> $dfile
+echo "MimeType=$MIMETYPE" >> $dfile
+echo "X-GNOME-UsesNotifications=true" >> $dfile
