@@ -17,6 +17,7 @@ echo "$NAME" > $HOME/.bakkal/packages/$2
 
 dfile="$HOME/.local/share/applications/$NAME.desktop"
 touch $dfile
+chmod +x $dfile
 echo "[Desktop Entry]" > $dfile
 echo "Version=1.0" >> $dfile
 echo "Name=$NAME" >> $dfile
