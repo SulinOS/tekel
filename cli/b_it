@@ -2,6 +2,7 @@
 PATH=$PATH:/usr/libexec/bakkal/api
 script_url=$(get_script_url $2)
 curl $script_url > $HOME/.bakkal/tmp/$2.sh
+cd /data/app/$USER/$2
 . $HOME/.bakkal/tmp/$2.sh
 rm -rf "/data/app/$USER/$2"
 mkdir -p "/data/app/$USER/$2"
@@ -11,6 +12,7 @@ cd /data/app/$USER/$2
 _build
 cd /data/app/$USER/$2
 _install
+cd /data/app/$USER/$2
 echo "$NAME" > $HOME/.bakkal/packages/$2
 
 dfile="$HOME/.local/share/applications/$NAME.desktop"
