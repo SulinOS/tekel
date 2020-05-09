@@ -1,3 +1,3 @@
-PATH=$PATH:/usr/libexec/tekl/api
-[ -f $HOME/.tekl/packages/$2 ] || exit 1
+PATH=$PATH:/usr/libexec/tekel/api
+[ -f $HOME/.tekel/packages/$2 ] || exit 1
 echo $2 | get_info

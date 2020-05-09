@@ -1,21 +1,30 @@
 #!/bin/bash
 PATH=$PATH:/usr/libexec/tekel/api
 script_url=$(get_script_url $2)
-curl $script_url > $HOME/.tekel/tmp/$2.sh
-cd /data/app/$USER/$2
-. $HOME/.tekel/tmp/$2.sh
 rm -rf "/data/app/$USER/$2"
 mkdir -p "/data/app/$USER/$2"
+if [ "$script_url" == "" ] ; then
+    echo "package not found in repo"
+    rm -rf "/data/app/$USER/$2"
+    exit 1
+fi
+curl $script_url > /data/app/$USER/$2/$2.tekel
 cd /data/app/$USER/$2
-_setup
+for i in $SRCS
+do
+	wget -c $i
+done
 cd /data/app/$USER/$2
-_build
+. $2.tekel
 cd /data/app/$USER/$2
-_install
+_setup || true
 cd /data/app/$USER/$2
-echo "$NAME" > $HOME/.tekel/packages/$2
+_build || true
+cd /data/app/$USER/$2
+_install || true
+cd /data/app/$USER/$2
 
-dfile="$HOME/.local/share/applications/$NAME.desktop"
+export dfile="$HOME/.local/share/applications/$NAME.desktop"
 touch $dfile
 chmod +x $dfile
 echo "[Desktop Entry]" > $dfile

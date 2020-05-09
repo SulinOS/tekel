@@ -1,0 +1,3 @@
+PATH=$PATH:/usr/libexec/tekel/api
+cd $HOME/.tekel
+cat index | sed "s/::.*//g" | sort
