@@ -1,2 +1,0 @@
-hello::http://127.0.0.1//hello.sh
-hi::http://127.0.0.1//foo/hi.sh

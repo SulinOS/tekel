@@ -1,2 +1,0 @@
-PATH=$PATH:/usr/libexec/tekel/api
-ls /data/app/$USER/

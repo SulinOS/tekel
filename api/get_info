@@ -1,6 +1,0 @@
-while read line
-do
-echo "Name: $line"
-echo "Install location: /data/app/$USER/$line"
-echo "Size: $(du -h /data/app/$USER/$line | tail -n 1)"
-done

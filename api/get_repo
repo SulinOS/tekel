@@ -1,4 +1,0 @@
-while read line
-do
-curl $line >> $HOME/.tekel/index 
-done

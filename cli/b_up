@@ -1,4 +1,0 @@
-PATH=$PATH:/usr/libexec/tekel/api
-rm -f $HOME/.tekel/index
-echo https://gitlab.com/sulinos/repositories/tekel-repo/-/raw/master/index.txt | get_repo
-[ -f $HOME/.tekel/repo.txt ] && cat $HOME/.tekel/repo.txt | get_repo

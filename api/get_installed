@@ -1,3 +1,0 @@
-PATH=$PATH:/usr/libexec/tekel/api
-mkdir -p $HOME/.tekel/packages 2> /dev/null
-ls $HOME/.tekel/packages/ | get_info

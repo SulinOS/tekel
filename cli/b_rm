@@ -1,4 +1,0 @@
-PATH=$PATH:/usr/libexec/tekel/api
-. /data/app/$USER/$2/$2.tekel
-rm -f "$HOME/.local/share/applications/$NAME.desktop"
-rm -rf /data/app/$USER/$2
