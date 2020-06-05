@@ -2,6 +2,11 @@
 
 APPDIR="/data/app/$USER"
 REPO="https://gitlab.com/sulinos/repositories/tekel-repo/-/raw/master/index.txt"
+touch $USER/.tekel
+if [ $UID -eq 0 ] ; then
+	echo "root not allowed"
+	exit 1
+fi
 
 generate_line(){
 	while read line
