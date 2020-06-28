@@ -20,7 +20,6 @@ index(){
 }
 
 install_common(){
-	mkdir -p $APPDIR/$1
 	cd $APPDIR/$1
 	. "$1.tekel"
 	[ "$SOURCE" == "" ] || wget -c $SOURCE
@@ -47,14 +46,15 @@ install_common(){
 install_remote(){
 	link=$(cat $HOME/.tekel | grep $1 | head -n 1 | sed "s/^.*:://g")
 	curl $link > "/tmp/$1.tekel"
+	mkdir -p $APPDIR/$1
 	mv "/tmp/$1.tekel" "$APPDIR/$1/$1.tekel"
 	install_common $1
 }
 
 install_local(){
+	mkdir -p $APPDIR/$1
 	cp "$1.tekel" "$APPDIR/$1/$1.tekel"
 	install_common $1
-	
 }
 
 remove(){
