@@ -28,7 +28,7 @@ install_common(){
 	_build
 	cd $APPDIR/$1
 	_install
-	mkdir -p export dfile="$HOME/.local/share/applications/" &>/dev/null || true 
+	mkdir -p "$HOME/.local/share/applications/" &>/dev/null || true 
 	export dfile="$HOME/.local/share/applications/$NAME.desktop"
 	touch $dfile
 	chmod +x $dfile
