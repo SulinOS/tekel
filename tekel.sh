@@ -1,10 +1,21 @@
 #!/bin/bash
 
 APPDIR="/data/app/$USER"
-REPO="https://gitlab.com/sulinos/repositories/tekel-repo/-/raw/master/index.txt"
+if [ ! -d /data/app/ ] ; then
+	APPDIR=$HOME/.tekelapps
+	mkdir -p $APPDIR 2>/dev/null || true
+fi
+set -e
+if [ ! -d $APPDIR ] ; then
+	su -c "mkdir -p $APPDIR ; chmod 755 $APPDIR ; chown $USER -R $APPDIR" || exit 1
+fi
+[ "$REPO" == "" ] && export REPO="https://gitlab.com/sulinos/repositories/tekel-repo/-/raw/master/index.txt"
 if [ $UID -eq 0 ] ; then
-	echo "root not allowed"
-	exit 1
+	APPDIR=/data/app/system
+	if [ ! -d /data/app/ ] ; then
+		APPDIR=/opt/
+		mkdir -p $APPDIR 2>/dev/null || true
+	fi
 fi
 touch $HOME/.tekel
 generate_line(){
@@ -28,7 +39,11 @@ install_common(){
 	_build
 	cd $APPDIR/$1
 	_install
-	export dfile="$HOME/.local/share/applications/$NAME.desktop"
+	if [ $UID -eq 0 ] ; then
+		export dfile="/usr/share/applications/$NAME.tekel.desktop"
+	else
+		export dfile="$HOME/.local/share/applications/$NAME.desktop"
+	fi
 	touch $dfile
 	chmod +x $dfile
 	echo "[Desktop Entry]" > $dfile
@@ -44,23 +59,47 @@ install_common(){
 }
 
 install_remote(){
+	if [ -f "$APPDIR/$1/$1.tekel" ] ; then
+		echo "Package $1 already installed."
+		echo "You can remove $APPDIR/$1."
+		exit 1
+	fi 
 	link=$(cat $HOME/.tekel | grep $1 | head -n 1 | sed "s/^.*:://g")
 	curl $link > "/tmp/$1.tekel"
-	mkdir -p $APPDIR/$1
-	mv "/tmp/$1.tekel" "$APPDIR/$1/$1.tekel"
-	install_common $1
+	if [ -f "/tmp/$1.tekel" ] ; then
+		mkdir -p $APPDIR/$1
+		mv "/tmp/$1.tekel" "$APPDIR/$1/$1.tekel"
+		install_common $1
+	else
+		echo "Cannot get tekel file"
+		exit 1
+	fi
 }
 
 install_local(){
-	mkdir -p $APPDIR/$1
-	cp "$1.tekel" "$APPDIR/$1/$1.tekel"
-	install_common $1
+	if [ -f "$APPDIR/$1/$1.tekel" ] ; then
+		echo "Package $1 already installed."
+		echo "You can remove $APPDIR/$1."
+		exit 1
+	fi 
+	if [ -f "$1.tekel" ] ; then
+		mkdir -p $APPDIR/$1
+		cp "$1.tekel" "$APPDIR/$1/$1.tekel"
+		install_common $1
+	else
+		echo "Tekel file not found"
+		exit 1
+	fi
 }
 
 remove(){
 	if [ -f "$APPDIR/$1/$1.tekel" ] ; then
 		. "$APPDIR/$1/$1.tekel"
-		rm -f "$HOME/.local/share/applications/$NAME.desktop"
+		if [ $UID -eq 0 ] ; then
+			export dfile="/usr/share/applications/$NAME.tekel.desktop"
+		else
+			rm -f "$HOME/.local/share/applications/$NAME.desktop"
+		fi
 		rm -rf "$APPDIR/$1"
 	fi
 }
@@ -78,8 +117,9 @@ list(){
 }
 
 look(){
-	cat $HOME/.tekel | sed "s/::.*$//g" | sort
+	cat $HOME/.tekel | sed "s/::.*$//g" | sort | grep "$1"
 }
+
 
 print_help(){
 	echo "tekel - Userspace package installer for SulinOS"
@@ -117,7 +157,7 @@ case "$1" in
 	fi
 	;;
 	s|show)
-	look
+	look $2
 	;;
 	l|list)
 	list
