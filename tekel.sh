@@ -39,6 +39,9 @@ install_common(){
 	_build
 	cd $APPDIR/$1
 	_install
+	if [ "$desktop_files" == "" ] ; then
+		return 0
+	fi
 	if [ $UID -eq 0 ] ; then
 		export dfile="/usr/share/applications/$NAME.tekel.desktop"
 	else
@@ -82,10 +85,11 @@ install_local(){
 		echo "You can remove $APPDIR/$1."
 		exit 1
 	fi 
-	if [ -f "$1.tekel" ] ; then
-		mkdir -p $APPDIR/$1
-		cp "$1.tekel" "$APPDIR/$1/$1.tekel"
-		install_common $1
+	if [ -f "$1" ] ; then
+		name=$(sh -c "source $(realpath $1) ; echo -n \$NAME" | sed "s/ /_/g")
+		mkdir -p $APPDIR/$name
+		cp "$1" "$APPDIR/$name/$name.tekel"
+		install_common $name
 	else
 		echo "Tekel file not found"
 		exit 1
@@ -95,10 +99,20 @@ install_local(){
 remove(){
 	if [ -f "$APPDIR/$1/$1.tekel" ] ; then
 		. "$APPDIR/$1/$1.tekel"
-		if [ $UID -eq 0 ] ; then
-			export dfile="/usr/share/applications/$NAME.tekel.desktop"
+		if [ "$desktop_files" == "" ] ; then
+			if [ $UID -eq 0 ] ; then
+				rm -f "/usr/share/applications/$NAME.desktop"
+			else
+				rm -f "$HOME/.local/share/applications/$NAME.desktop"
+			fi
 		else
-			rm -f "$HOME/.local/share/applications/$NAME.desktop"
+			for file in ${desktop_files[@]} ; do
+				if [ $UID -eq 0 ] ; then
+					rm -f "/usr/share/applications/$file.desktop"
+				else
+					rm -f "$HOME/.local/share/applications/$file.desktop"
+				fi	
+			done
 		fi
 		rm -rf "$APPDIR/$1"
 	fi
