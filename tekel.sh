@@ -47,6 +47,7 @@ install_common(){
 	else
 		export dfile="$HOME/.local/share/applications/$NAME.desktop"
 	fi
+	mkdir -p "$(dirname $dfile)" 2>/dev/null || true
 	touch $dfile
 	chmod +x $dfile
 	echo "[Desktop Entry]" > $dfile
