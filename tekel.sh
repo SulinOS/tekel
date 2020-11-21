@@ -1,6 +1,7 @@
 #!/bin/bash
 
 APPDIR="/data/app/$USER"
+umask 022
 if [ ! -d /data/app/ ] ; then
 	APPDIR=$HOME/.tekelapps
 	mkdir -p $APPDIR 2>/dev/null || true
@@ -14,8 +15,10 @@ if [ $UID -eq 0 ] ; then
 	APPDIR=/data/app/system
 	if [ ! -d /data/app/ ] ; then
 		APPDIR=/opt/
-		mkdir -p $APPDIR 2>/dev/null || true
 	fi
+fi
+if [ ! -d $APPDIR ] ; then
+	su -c "mkdir -p $APPDIR ; chown $USER $APPDIR ; chmod 755 $APPDIR" 2>/dev/null || true
 fi
 touch $HOME/.tekel
 generate_line(){
@@ -39,12 +42,13 @@ install_common(){
 	_build
 	cd $APPDIR/$1
 	_install
-	if [ "$desktop_files" == "" ] ; then
+	if ! [ "$desktop_files" == "" ] ; then
 		return 0
 	fi
 	if [ $UID -eq 0 ] ; then
 		export dfile="/usr/share/applications/$NAME.tekel.desktop"
 	else
+	        mkdir -p "$HOME/.local/share/applications/" 2>/dev/null
 		export dfile="$HOME/.local/share/applications/$NAME.desktop"
 	fi
 	mkdir -p "$(dirname $dfile)" 2>/dev/null || true
@@ -136,6 +140,10 @@ look(){
 }
 
 
+selfupdate(){
+	su -c "curl https://gitlab.com/sulinos/devel/tekel/-/raw/master/tekel.sh > /usr/bin/tekel" 
+}
+
 print_help(){
 	echo "tekel - Userspace package installer for SulinOS"
 	if [ "$1" != "" ]; then
@@ -191,6 +199,9 @@ case "$1" in
 	;;
 	n|index)
 	index
+	;;
+	+|selfupdate)
+	selfupdate
 	;;
 	*)
 	print_help
