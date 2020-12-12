@@ -1,5 +1,4 @@
 #!/bin/bash
-
 APPDIR="/data/app/$USER"
 umask 022
 if [ ! -d /data/app/ ] ; then
@@ -37,11 +36,17 @@ install_common(){
 	cd $APPDIR/$1
 	. "$1.tekel"
 	[ "$SOURCE" == "" ] || wget -c $SOURCE
-	_setup
+	set -x
+        _setup
+	set +x
 	cd $APPDIR/$1
+	set -x
 	_build
+	set +x
 	cd $APPDIR/$1
+	set -x
 	_install
+	set +x
 	if ! [ "$desktop_files" == "" ] ; then
 		return 0
 	fi
